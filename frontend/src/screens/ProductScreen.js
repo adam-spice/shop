@@ -12,7 +12,7 @@ const ProductScreen = ({ match }) => {
     const fetchProduct = async () => {
       const { data } = await Axios.get(`/api/products/${match.params.id}`)
 
-      setProduct(data)
+      setProduct(data.product)
     }
     fetchProduct()
   }, [match])
