@@ -1,0 +1,23 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "MERN ecommerce platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam-spice/shop.git"
+  },
+  "author": "Adam Spice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adam-spice/shop/issues"
+  },
+  "homepage": "https://github.com/adam-spice/shop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
