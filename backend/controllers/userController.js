@@ -1,5 +1,6 @@
 import HttpError from '../models/http-error.js'
 import User from '../models/userModel.js'
+import generateToken from '../utils/generateToken.js'
 
 /**
  * @desc    Auth user & get token
@@ -8,9 +9,8 @@ import User from '../models/userModel.js'
  **/
 export const authUser = async (req, res, next) => {
   const { email, password } = req.body
-  console.log('password', password)
-  let existingUser
 
+  let existingUser
   try {
     existingUser = await User.findOne({ email })
   } catch (error) {
@@ -25,7 +25,7 @@ export const authUser = async (req, res, next) => {
 
   let isValidPassword = false
   try {
-    isValidPassword = existingUser.matchPassword(password)
+    isValidPassword = await existingUser.matchPassword(password)
   } catch (error) {
     return next(new HttpError('Invalid credentials, could not log you in', 500))
   }
@@ -34,11 +34,20 @@ export const authUser = async (req, res, next) => {
     return next(new HttpError('Invalid credentials, could not log you in', 403))
   }
 
+  let token
+  try {
+    token = await generateToken(existingUser._id)
+  } catch (error) {
+    return next(
+      new HttpError('Signing up failed, please try again later.', 500),
+    )
+  }
+
   return res.status(200).json({
     userId: existingUser.id,
     name: existingUser.name,
     email: existingUser.email,
     isAdmin: existingUser.isAdmin,
-    token: null,
+    token: token,
   })
 }
