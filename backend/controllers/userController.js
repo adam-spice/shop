@@ -51,3 +51,30 @@ export const authUser = async (req, res, next) => {
     token: token,
   })
 }
+
+/**
+ * @desc    Get user profile
+ * @route   GET /api/user/profile
+ * @access  Private
+ **/
+export const getUserProfile = async (req, res, next) => {
+  let existingUser
+  try {
+    existingUser = await User.findOne(req.user)
+  } catch (error) {
+    return next(new HttpError('Unable to find a user with this id', 404))
+  }
+
+  const user = await User.findById(req.user._id)
+
+  if (user) {
+    return res.status(200).json({
+      userId: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      isAdmin: existingUser.isAdmin,
+    })
+  } else {
+    return next(new HttpError('Unable to find a user with this id', 404))
+  }
+}
