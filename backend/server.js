@@ -6,6 +6,7 @@ import httpLogger from './middleware/http-logger.js'
 import logger from './util/logger.js'
 
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import HttpError from './models/http-error.js'
 
 dotenv.config()
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 // handle not found routes
 app.use((req, res, next) => {
