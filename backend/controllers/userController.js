@@ -121,10 +121,10 @@ export const getUserProfile = async (req, res, next) => {
 
   if (user) {
     return res.status(200).json({
-      userId: existingUser.id,
-      name: existingUser.name,
-      email: existingUser.email,
-      isAdmin: existingUser.isAdmin,
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
     })
   } else {
     return next(new HttpError('Unable to find a user with this id', 404))
