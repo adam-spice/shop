@@ -139,9 +139,6 @@ export const getUserProfile = async (req, res, next) => {
 export const updateUserProfile = async (req, res, next) => {
   const { name, email, password } = req.body
   const user = await User.findById(req.user._id)
-  console.log('password :>> ', password)
-  console.log('name :>> ', name)
-  console.log('email :>> ', email)
   if (user) {
     user.name = name || user.name
     user.email = email || user.email
