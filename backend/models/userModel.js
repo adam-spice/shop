@@ -20,6 +20,17 @@ userSchema.methods.matchPassword = async function (password) {
   return hash === this.password
 }
 
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next()
+  }
+  try {
+    this.password = await bcrypt.hash(this.password, this.salt)
+  } catch (error) {
+    console.log('error :>> ', error)
+  }
+})
+
 const User = mongoose.model('User', userSchema)
 
 export default User

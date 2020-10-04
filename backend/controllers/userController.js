@@ -117,13 +117,6 @@ export const registerUser = async (req, res, next) => {
  * @access  Private
  **/
 export const getUserProfile = async (req, res, next) => {
-  let existingUser
-  try {
-    existingUser = await User.findOne(req.user)
-  } catch (error) {
-    return next(new HttpError('Unable to find a user with this id', 404))
-  }
-
   const user = await User.findById(req.user._id)
 
   if (user) {
@@ -132,6 +125,53 @@ export const getUserProfile = async (req, res, next) => {
       name: existingUser.name,
       email: existingUser.email,
       isAdmin: existingUser.isAdmin,
+    })
+  } else {
+    return next(new HttpError('Unable to find a user with this id', 404))
+  }
+}
+
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/user/profile
+ * @access  Private
+ **/
+export const updateUserProfile = async (req, res, next) => {
+  const { name, email, password } = req.body
+  const user = await User.findById(req.user._id)
+  console.log('password :>> ', password)
+  console.log('name :>> ', name)
+  console.log('email :>> ', email)
+  if (user) {
+    user.name = name || user.name
+    user.email = email || user.email
+    if (password) {
+      user.password = password || user.password
+    }
+
+    let token
+    try {
+      token = generateToken(user._id)
+    } catch (error) {
+      return next(
+        new HttpError(
+          'Generating a token failed, please try again later.',
+          500,
+        ),
+      )
+    }
+    let updatedUser
+    try {
+      updatedUser = await user.save()
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
+    return res.status(200).json({
+      userId: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: token,
     })
   } else {
     return next(new HttpError('Unable to find a user with this id', 404))
