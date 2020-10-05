@@ -77,7 +77,6 @@ export const updateOrderToPaid = async (req, res, next) => {
       new HttpError('Could not find an order for the provided id.', 404),
     )
   }
-  console.log('orderId :>> ', orderId)
 
   order.isPaid = true
   order.paidAt = Date.now()
@@ -96,4 +95,22 @@ export const updateOrderToPaid = async (req, res, next) => {
   }
 
   return res.status(200).json(updatedOrder)
+}
+
+/**
+ * @desc    Get logged in user orders
+ * @route   GET /api/orders/myorders
+ * @access  Private
+ **/
+export const getMyOrders = async (req, res, next) => {
+  let orders
+  try {
+    orders = await Order.find({ user: req.user._id })
+  } catch (error) {
+    return next(
+      new HttpError('Could not find any orders for the provided id.', 404),
+    )
+  }
+
+  return res.status(200).json(orders)
 }

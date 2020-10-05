@@ -12,6 +12,9 @@ import {
   ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
+  ORDER_LIST_MY_REQUEST,
+  ORDER_LIST_MY_SUCCESS,
+  ORDER_LIST_MY_FAIL,
 } from '../constants/orderConstants'
 import { logout } from './userActions'
 
@@ -139,6 +142,32 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
     dispatch({
       type: ORDER_DELIVER_FAIL,
       payload: message,
+    })
+  }
+}
+
+export const listMyOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_LIST_MY_REQUEST })
+
+    const { userLogin } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userLogin.userInfo.token}`,
+      },
+    }
+
+    const { data } = await Axios.get(`/api/orders/myorders`, config)
+
+    dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_MY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     })
   }
 }
