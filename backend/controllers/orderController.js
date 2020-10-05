@@ -55,3 +55,44 @@ export const getOrderById = async (req, res, next) => {
 
   return res.status(200).json(order)
 }
+
+/**
+ * @desc    Update order to Paid
+ * @route   PUT /api/orders/:id/pay
+ * @access  Private
+ **/
+export const updateOrderToPaid = async (req, res, next) => {
+  const { orderId } = req.params
+  const {
+    id,
+    status,
+    update_time,
+    payer: { email_address },
+  } = req.body
+  let order
+  try {
+    order = await Order.findById(orderId)
+  } catch (error) {
+    return next(
+      new HttpError('Could not find an order for the provided id.', 404),
+    )
+  }
+
+  order.isPaid = true
+  order.paidAt = Date.now()
+  order.paymentResult = {
+    id,
+    status,
+    update_time,
+    email_address,
+  }
+
+  let updatedOrder
+  try {
+    updatedOrder = await order.save()
+  } catch (error) {
+    return next(new HttpError('Unable to update order', 500))
+  }
+
+  return res.status(200).json(updatedOrder)
+}
