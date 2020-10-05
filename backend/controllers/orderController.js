@@ -77,6 +77,7 @@ export const updateOrderToPaid = async (req, res, next) => {
       new HttpError('Could not find an order for the provided id.', 404),
     )
   }
+  console.log('orderId :>> ', orderId)
 
   order.isPaid = true
   order.paidAt = Date.now()

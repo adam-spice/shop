@@ -29,6 +29,10 @@ app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 
+app.get('/api/config/paypal', (req, res) =>
+  res.send(process.env.PAY_PAL_CLIENT_ID),
+)
+
 // handle not found routes
 app.use((req, res, next) => {
   throw new HttpError('Could not find this route.', 404)
