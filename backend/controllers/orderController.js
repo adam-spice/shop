@@ -36,3 +36,22 @@ export const addOrderItems = async (req, res, next) => {
 
   return res.status(201).json(createdOrder)
 }
+
+/**
+ * @desc    Get order by ID
+ * @route   GET /api/orders/:id
+ * @access  Private
+ **/
+export const getOrderById = async (req, res, next) => {
+  const { id } = req.params
+  let order
+  try {
+    order = await Order.findById(id).populate('user', 'name')
+  } catch (error) {
+    return next(
+      new HttpError('Could not find an order for the provided id.', 404),
+    )
+  }
+
+  return res.status(200).json(order)
+}
