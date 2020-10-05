@@ -80,13 +80,10 @@ export const registerUser = async (req, res, next) => {
 
   let createdUser
   try {
-    const salt = await generateSalt()
-    const generatedPassword = await generatePassword(password, salt)
     createdUser = await User.create({
       name,
       email,
-      salt,
-      password: generatedPassword,
+      password,
     })
   } catch (error) {
     console.log('error :>> ', error)

@@ -47,7 +47,7 @@ const RegisterScreen = ({ location, history }) => {
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Name</Form.Label>
           <Form.Control
             type='text'
             placeholder='Enter Name'
