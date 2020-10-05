@@ -46,7 +46,7 @@ export const getOrderById = async (req, res, next) => {
   const { id } = req.params
   let order
   try {
-    order = await Order.findById(id).populate('user', 'name')
+    order = await Order.findById(id).populate('user', 'name email')
   } catch (error) {
     return next(
       new HttpError('Could not find an order for the provided id.', 404),
