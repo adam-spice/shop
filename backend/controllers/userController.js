@@ -171,3 +171,19 @@ export const updateUserProfile = async (req, res, next) => {
     return next(new HttpError('Unable to find a user with this id', 404))
   }
 }
+
+/**
+ * @desc    Get all users
+ * @route   GET /api/users
+ * @access  Private/Admin
+ **/
+export const getUsers = async (req, res, next) => {
+  let users
+  try {
+    users = await User.find({})
+  } catch (error) {
+    return next(new HttpError('Something went wrong there', 500))
+  }
+
+  return res.status(200).json(users)
+}

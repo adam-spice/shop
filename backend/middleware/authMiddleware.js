@@ -24,3 +24,11 @@ export const protect = async (req, res, next) => {
     return next(new HttpError('Not authorized, no token', 401))
   }
 }
+
+export const admin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next()
+  } else {
+    return next(new HttpError('Not authorized as an admin', 401))
+  }
+}
