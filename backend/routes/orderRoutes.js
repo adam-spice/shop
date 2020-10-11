@@ -3,7 +3,7 @@ import {
   addOrderItems,
   getMyOrders,
   getOrderById,
-  updateOrderToPaid,
+  updateOrderToPaid
 } from '../controllers/orderController.js'
 import { protect } from '../middleware/authMiddleware.js'
 

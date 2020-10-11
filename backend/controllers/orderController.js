@@ -14,7 +14,7 @@ export const addOrderItems = async (req, res, next) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    totalPrice,
+    totalPrice
   } = req.body
 
   if (orderItems && orderItems.length === 0) {
@@ -29,7 +29,7 @@ export const addOrderItems = async (req, res, next) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    totalPrice,
+    totalPrice
   })
 
   const createdOrder = await order.save()
@@ -49,7 +49,7 @@ export const getOrderById = async (req, res, next) => {
     order = await Order.findById(id).populate('user', 'name email')
   } catch (error) {
     return next(
-      new HttpError('Could not find an order for the provided id.', 404),
+      new HttpError('Could not find an order for the provided id.', 404)
     )
   }
 
@@ -67,14 +67,14 @@ export const updateOrderToPaid = async (req, res, next) => {
     id,
     status,
     update_time,
-    payer: { email_address },
+    payer: { email_address }
   } = req.body
   let order
   try {
     order = await Order.findById(orderId)
   } catch (error) {
     return next(
-      new HttpError('Could not find an order for the provided id.', 404),
+      new HttpError('Could not find an order for the provided id.', 404)
     )
   }
 
@@ -84,7 +84,7 @@ export const updateOrderToPaid = async (req, res, next) => {
     id,
     status,
     update_time,
-    email_address,
+    email_address
   }
 
   let updatedOrder
@@ -108,7 +108,7 @@ export const getMyOrders = async (req, res, next) => {
     orders = await Order.find({ user: req.user._id })
   } catch (error) {
     return next(
-      new HttpError('Could not find any orders for the provided id.', 404),
+      new HttpError('Could not find any orders for the provided id.', 404)
     )
   }
 
